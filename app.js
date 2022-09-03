@@ -12,6 +12,13 @@ const authRouter = require("./src/routes/authRoute")
 
 const shipmentRouter = require("./src/routes/shipmentRoute")
 
+const adminRouter = require("./src/routes/adminRoute")
+
+const cartRouter = require("./src/routes/cartRoute")
+
+const orderRouter = require("./src/routes/orderroute")
+
+
 const colors = require("colors")
 
 const connectDb = require("./config/config")
@@ -28,6 +35,11 @@ connectDb()
 // mount routers
 app.use("/api/v1/auth",authRouter)
 app.use("/api/v1/shipment",shipmentRouter)
+app.use("/api/v1/admin",adminRouter)
+app.use("/api/v1/cart",cartRouter)
+app.use("/api/v1/order",orderRouter)
+
+
 
 
 // handels error

@@ -11,6 +11,7 @@ const User = require("../models/Usermodel")
 const createShipment = asyncHandler(async(req,res,next)=>{
     
     const {productName,weight,trackingNumber,uniqueId,amountPerKg} = req.body
+   
     const trackingHistory = `Package has been received and processed at the warehouse ${Date()}`
 
     let user = await User.findOne({uniqueId})
@@ -37,7 +38,7 @@ const createShipment = asyncHandler(async(req,res,next)=>{
         const findIndex = shipment.products.findIndex(product=>product.trackingNumber===trackingNumber)
       
         // newly added shipment
-        let findProduct = shipment.products[findIndex]
+        let product = shipment.products[findIndex]
 
          // send mail to the user to notify of new shipment
 
@@ -45,7 +46,7 @@ const createShipment = asyncHandler(async(req,res,next)=>{
         await sendMail({
             email:user.email,
             subject:"new shipment received",
-            message:`Hi ${user.name} your order with tracking number ${trackingNumber} has been proceesed at our warehouse this are the details ${findProduct}}`
+            message:`Hi ${user.name} your order with tracking number ${trackingNumber} has been proceesed at our warehouse this are the details ${product}}`
         })
     } catch (error) {
         console.log(error.message)
@@ -54,7 +55,7 @@ const createShipment = asyncHandler(async(req,res,next)=>{
         
         
 
-       return res.status(201).json({success:true,data:shipment})
+       return res.status(201).json({success:true,data:product})
 
     }
 
@@ -247,6 +248,38 @@ const getShipmentDelivered = asyncHandler(async(req,res,next)=>{
     
    return res.status(200).json({success:true,count:shipmentDelivered.length,data:shipmentDelivered})
 })
+
+// desc => get tracking history of a user
+// route => get/api/v1/shipment/trackinghistory
+// access => Private
+
+const trackingHistory = asyncHandler(async(req,res,next)=>{
+   
+    const owner = req.user.id
+    
+    const id = req.params.id
+
+    const shipment = await Shipment.findOne({owner})
+
+    if(!shipment) return next(new ErrorResponse(`No shipment in Data base`,404))
+
+    const findIndex = shipment.products.findIndex(product=>product._id == id)
+
+    if(findIndex < 0) return next(new ErrorResponse("No shipment found",404))
+
+    const product = shipment.products[findIndex]
+
+    const trackingHistory = product.trackingHistory
+    const data = {trackingHistory,
+        weight:product.weight,
+        productName:product.productName}
+
+    res.status(200).json({success:true,data})
+
+
+
+})
+
 
 // desc => get all shippment in DB
 // route => get/api/v1/shipmentprocessed
@@ -450,6 +483,8 @@ const updateStatus = asyncHandler(async(req,res,next)=>{
     const user = await User.findOne({uniqueId})
    
     const index = shipment.products.findIndex(product=>product.trackingNumber===trackingNumber)
+
+    if(index < 0) return next(new ErrorResponse("No shipment found",404))
   
    const product = shipment.products[index]
 
@@ -529,5 +564,6 @@ const updateStatus = asyncHandler(async(req,res,next)=>{
 
 
 
+
 module.exports = {createShipment,getShipment,getShipmentProcessed,getShipmentPacking,getShipmentShipped,getShipmentArrived,getShipmentDispatched,getShipmentDelivered,getAllShipment,
-    allShipmentProcessed,allShipmentshipped,allShipmentArrived,allShipmentDispatched,allShipmentDelivered,allShipmentPacking,updateStatus}
+    allShipmentProcessed,allShipmentshipped,allShipmentArrived,allShipmentDispatched,allShipmentDelivered,allShipmentPacking,updateStatus,trackingHistory}
