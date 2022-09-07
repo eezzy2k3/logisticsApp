@@ -11,7 +11,7 @@ const orderSchema = mongoose.Schema({
     bill:{
         type:String
     }
-})
+},{timestamps:true})
 
 const Order = mongoose.model("Order",orderSchema)
 
