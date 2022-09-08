@@ -24,3 +24,5 @@ The api comes with full functionality and complete crud functionallity both for 
     - set coupon expiration date
     - set coupon discount price
 
+    [Here is a link to the documentation](https://documenter.getpostman.com/view/20496357/VVBWT6BY)
+
