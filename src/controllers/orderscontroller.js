@@ -5,6 +5,7 @@ const sendMail = require("../utils/sendMail")
 const User = require("../models/Usermodel")
 const Cart = require("../models/cartmodel")
 const Order = require("../models/orderModel")
+const Coupon = require("../models/CouponModel")
 const Flutterwave = require('flutterwave-node-v3');
 
 const checkout = asyncHandler(async(req,res,next)=>{
@@ -21,10 +22,33 @@ const checkout = asyncHandler(async(req,res,next)=>{
 
     const shipment = await Shipment.findOne({owner})
 
+    couponCode = req.body.couponCode
+
+    const coupon = await Coupon.findOne({couponCode,expireAt:{$gte:Date.now()}})
+
     const flw = new Flutterwave(process.env.FLW_PUBLIC_KEY, process.env.FLW_SECRET_KEY);
+
+    
+
+   
 
 
 if(cart){
+
+    if(couponCode){
+       
+        if(!coupon) return next(new ErrorResponse(`couponCode with code ${couponCode} does not exist`,404))
+       
+        const discountPercent = coupon.discount/100
+       
+        let bill = cart.bill - (cart.bill * discountPercent)
+        
+        bill = bill.toFixed(2)
+
+        cart.bill = bill
+    }
+
+
     let payload =  {
         card_number: req.body.card_number,
         cvv: req.body.cvv,

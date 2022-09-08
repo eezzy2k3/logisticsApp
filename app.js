@@ -18,6 +18,8 @@ const cartRouter = require("./src/routes/cartRoute")
 
 const orderRouter = require("./src/routes/orderroute")
 
+const couponRouter = require("./src/routes/couponRoute")
+
 const mongoSanitize = require('express-mongo-sanitize')
 
 const helmet = require("helmet")
@@ -73,6 +75,7 @@ app.use("/api/v1/shipment",shipmentRouter)
 app.use("/api/v1/admin",adminRouter)
 app.use("/api/v1/cart",cartRouter)
 app.use("/api/v1/order",orderRouter)
+app.use("/api/v1/coupon",couponRouter)
 
 
 
