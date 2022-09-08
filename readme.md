@@ -9,6 +9,7 @@ The api comes with full functionality and complete crud functionallity both for 
 - unique Identification number for user
 - user get email notification for all stages/status of shipment
 - user get shipment based on status
+- get shipment history
 - consolidation of shipment(you pay less when you ship more)
 - Integerated with checkout with flutterwave sdk
 - coupon can be used at checkout

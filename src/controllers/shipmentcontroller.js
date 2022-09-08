@@ -450,7 +450,7 @@ const allShipmentDelivered = asyncHandler(async(req,res,next)=>{
     
     const shipment = await Shipment.find().populate({path:"owner",select:"name"})
 
-    if(!shipment) return next(new ErrorResponse(`No shipment in Data base`,404))
+    if(!shipment) return next(new ErrorResponse(`No shipment found`,404))
       
         let shipmentDelivered = []
     
@@ -479,6 +479,8 @@ const updateStatus = asyncHandler(async(req,res,next)=>{
     const {trackingNumber,uniqueId,status} = req.body
    
     const shipment = await Shipment.findOne({uniqueId})
+
+    if(!shipment) return next(new ErrorResponse(`No shipment found`,404))
 
     const user = await User.findOne({uniqueId})
    

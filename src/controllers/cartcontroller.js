@@ -16,6 +16,8 @@ const createCart = asyncHandler(async(req,res,next)=>{
     // get shippment from DB
     const shipment = await Shipment.findOne({owner})
 
+    if(!shipment) return next(new ErrorResponse(`No shipment found`,404))
+
     // only shipment with status processed can be added to cart
     let shipmentProccessed = []
    

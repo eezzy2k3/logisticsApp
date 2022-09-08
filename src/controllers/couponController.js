@@ -37,11 +37,11 @@ const allCoupon = asyncHandler(async(req,res,next)=>{
 })
 
 const delCoupon = asyncHandler(async(req,res,next)=>{
-    const id = req.params.couponCode
+    const id = req.params.id
   
     const coupon = await Coupon.findByIdAndDelete(id)
 
-    if(!coupon) return next(new ErrorResponse(`coupon with code number ${couponCode} does not exist`,404))
+    if(!coupon) return next(new ErrorResponse(`coupon does mot exist`,404))
 
     res.status(200).json({success:true,data:{}})
 })

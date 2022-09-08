@@ -34,12 +34,12 @@ const userSchema = mongoose.Schema({
         addressline1:{
             type:String,
             required:true,
-            default:"17939 Kieth Harrow Blvd"
+            default:"83939 Snid Harrow Blvd"
         },
         addressline2:{
             type:String,
             required:true,
-            default:"Suite 106"
+            default:"Suite 06"
         },
         city:{
             type:String,
@@ -54,7 +54,7 @@ const userSchema = mongoose.Schema({
         zip:{
             type:String,
             required:true,
-            default:"77084-5724"
+            default:"89074-6758"
         },
         country:{
             type:String,
@@ -64,7 +64,7 @@ const userSchema = mongoose.Schema({
         phoneNumber:{
             type:String,
             required:true,
-            default:"+1-832-220-3511"
+            default:"+1-672-000-5672"
         }
         
     },
