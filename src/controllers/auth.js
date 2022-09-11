@@ -134,7 +134,7 @@ const generateToken = asyncHandler(async(req,res,next)=>{
 
     const user = await User.findOne({email})
 
-    if(!email) return next (new ErrorResponse(`user with ${email} does not exist`,404))
+    if(!user) return next (new ErrorResponse(`user with ${email} does not exist`,404))
 
     const resetToken = jwt.sign({email:user.email},process.env.JWT_SECRET)
 
